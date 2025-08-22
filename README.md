@@ -16,9 +16,16 @@ Built atop the async Nacos v2 SDK (gRPC push + structured params).
 
 ---
 
-## Installation
+## Installation & Usage
 ```bash
+# 1. install the library
 pip install nacos-serving-python
+
+# 2. cd to your project root and run
+
+# 3. run the auto-registration CLI
+python -m nacos.auto.registration --nacos-server 127.0.0.1:8848 --service-name demoservice app.py
+
 ```
 
 ---
