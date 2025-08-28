@@ -14,6 +14,10 @@ dependencies = [
     # 去掉 setuptools：不应作为运行时依赖
 ]
 
+# 可选：提供 extras 方式安装开发依赖（uv --with dev）
+[project.optional-dependencies]
+dev = ["pyright>=1.1.389"]
+
 [tool.hatch.build.targets.wheel]
 # 仅打包实际包路径而不是整个 src 根
 packages = ["src/nacos"]
@@ -39,6 +43,7 @@ nacos-serving-python = "nacos.auto.registration:main"
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
-[tool.uvicorn]
+# 修正节名：uv 读取 [tool.uv] 的 dev-dependencies
+[tool.uv]
 dev-dependencies = ["pyright>=1.1.389"]
 
