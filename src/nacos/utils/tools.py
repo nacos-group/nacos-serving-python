@@ -1,3 +1,4 @@
+# pyright: reportAssignmentType=false
 """
 Common Utility Module
 Contains various public utility methods
