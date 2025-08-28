@@ -1,0 +1,47 @@
+name: Build By UV
+
+on:
+  push:
+    branches:
+      - "main"
+
+jobs:
+  publish-pypi:
+    strategy:
+      fail-fast: false
+      matrix:
+        package: ["nacos-serving-python"]
+    name: Build ${{ matrix.package }}
+    environment: release
+    permissions:
+      id-token: write # Required for trusted publishing
+    runs-on: ubuntu-latest
+    steps:
+      - name: Extract Version
+        id: version_step
+        run: |
+          VERSION=${GITHUB_REF#$"refs/tags/"}
+          echo "version $VERSION"
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+      - name: checkout branch
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version-file: ".python-version"
+
+      - name: Install dependencies
+        working-directory: ./
+        run: uv sync --frozen --all-extras --dev
+
+      - name: Run pyright
+        working-directory: ./
+        run: uv run --frozen pyright
+
+      - name: Build package
+        working-directory: ./
+        run: uv build

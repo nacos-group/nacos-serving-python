@@ -1,0 +1,57 @@
+name: Publish To PyPi
+
+on:
+  push:
+    tags:
+      - "*"
+
+jobs:
+  publish-pypi:
+    strategy:
+      fail-fast: false
+      matrix:
+        package: ["nacos-serving-python"]
+    name: Build ${{ matrix.package }}
+    environment:
+      name: pypi
+      url: https://pypi.org/p/nacos-serving-python
+    permissions:
+      id-token: write # Required for trusted publishing
+    runs-on: ubuntu-latest
+    steps:
+      - name: Extract Version
+        id: version_step
+        run: |
+          VERSION=${GITHUB_REF#$"refs/tags/"}
+          echo "version $VERSION"
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+      - name: Checkout Tag
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.version_step.outputs.version }}
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version-file: ".python-version"
+
+      - name: Install dependencies
+        working-directory: ./
+        run: uv sync --frozen --all-extras --dev
+
+      - name: Run pyright
+        working-directory: ./
+        run: uv run --frozen pyright
+
+      - name: Build package
+        working-directory: ./
+        run: uv build
+
+      - name: Publish package to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          password: ${{ secrets.PYPI_API_TOKEN }}
+          packages-dir: ./dist
