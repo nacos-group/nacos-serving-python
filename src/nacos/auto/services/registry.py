@@ -49,7 +49,7 @@ class ServiceRegistry:
     def _is_mock_mode(self) -> bool:
         """Check if it's mock mode"""
         server = self.nacos_config.get('server', '')
-        return server.startswith('mock:') or server == 'mock'
+        return server and server.startswith('mock:') or server == 'mock'
     
     def _run_async_safely(self, async_func, timeout=30):
         """Safely run an async function, intelligently handling event loops"""
@@ -73,6 +73,7 @@ class ServiceRegistry:
                            .namespace_id(self.nacos_config.get('namespace', ''))
                            .username(self.nacos_config.get('username', ''))
                            .password(self.nacos_config.get('password', ''))
+                           .endpoint_query_header({'Request-Module': 'Naming'})
                            .access_key(self.nacos_config.get('access_key', ''))
                            .secret_key(self.nacos_config.get('secret_key', ''))
                            .endpoint(self.nacos_config.get('endpoint', ''))
@@ -213,7 +214,7 @@ class ServiceRegistry:
             
             return False
     
-    def register_service_sync(self) -> bool:
+    def  register_service_sync(self) -> bool:
         """Synchronously register service"""
         try:
             if self._mock_mode:

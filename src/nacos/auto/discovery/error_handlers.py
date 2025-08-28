@@ -19,8 +19,6 @@ logger = logging.getLogger(NAMING_MODULE)
 F = TypeVar('F', bound=Callable[..., Any])
 AsyncF = TypeVar('AsyncF', bound=Callable[..., Awaitable[Any]])
 
-service_discovery = get_discovery_client()
-
 def handle_connection_errors(func: F) -> F:
     """
     Decorator to handle connection errors and add failed hosts to blacklist
@@ -83,7 +81,7 @@ def _process_error(error: Exception, *args, **kwargs) -> None:
     if address:
         host, port = address
         # Try to get URL from various sources
-        service_discovery.add_to_blacklist(host, port)   
+        get_discovery_client().add_to_blacklist(host, port)   
         logger.warning(f"Connection error detected: {host}:{port}, adding to blacklist. Error: {error}") 
     else:
         logger.debug("No address found in exception info, cannot add to blacklist")

@@ -74,7 +74,7 @@ class ConfigLoader:
         """Load default configuration"""
         return {
             'nacos': {
-                'server': DEFAULT_NACOS_SERVER,
+                'server': None,
                 'namespace': 'public',
                 'username': None,
                 'password': None,
@@ -95,7 +95,7 @@ class ConfigLoader:
                 },
                 'registration': {
                     'auto_register': True,
-                    'register_on_startup': False,
+                    'register_on_startup': True,
                     'register_on_request': True,
                     'retry_times': 3,
                     'retry_interval': 5,

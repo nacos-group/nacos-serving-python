@@ -14,7 +14,7 @@
 
 ---
 
-## 安装
+## 安装并运行
 ```bash
 # 1. install the library
 pip install nacos-serving-python

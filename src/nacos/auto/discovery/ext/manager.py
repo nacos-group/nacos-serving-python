@@ -21,7 +21,7 @@ logger = logging.getLogger(NAMING_MODULE)
 # Global state
 _discovery_client = None
 _discovery_lock = threading.Lock()
-_config: Dict[str, Any] = {}
+_config = None
 
 
 def configure():
@@ -70,6 +70,7 @@ async def _init_discovery_client_async() -> NacosServiceDiscovery:
                          .namespace_id(_config.get('namespace', 'public'))
                          .username(_config.get('username', ''))
                          .password(_config.get('password', ''))
+                         .endpoint_query_header({'Request-Module': 'Naming'})
                          .access_key(_config.get('access_key', ''))
                          .secret_key(_config.get('secret_key', ''))
                          .endpoint(_config.get('endpoint', ''))
