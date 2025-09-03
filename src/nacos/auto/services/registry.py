@@ -213,7 +213,7 @@ class ServiceRegistry:
             
             return False
     
-    def register_service_sync(self) -> bool:
+    def  register_service_sync(self) -> bool:
         """Synchronously register service"""
         try:
             if self._mock_mode:
