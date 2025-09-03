@@ -1,4 +1,4 @@
-# nacos-serving-python v0.1.0
+# nacos-serving-python v0.1.2
 <!-- ...existing code... -->
 
 ## Overview

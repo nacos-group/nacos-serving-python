@@ -49,7 +49,7 @@ class ServiceRegistry:
     def _is_mock_mode(self) -> bool:
         """Check if it's mock mode"""
         server = self.nacos_config.get('server', '')
-        return server.startswith('mock:') or server == 'mock'
+        return server and server.startswith('mock:') or server == 'mock'
     
     def _run_async_safely(self, async_func, timeout=30):
         """Safely run an async function, intelligently handling event loops"""

@@ -1,6 +1,6 @@
 [project]
 name = "nacos-serving-python"
-version = "0.1.0"
+version = "0.1.2"
 description = "Nacos 2.x async serving & config SDK with auto registration and discovery extensions"
 readme = "README.md"
 requires-python = ">=3.12"
